@@ -1,0 +1,8 @@
+.App {
+  background-color: #4cabea; /* Light gray background */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+}
