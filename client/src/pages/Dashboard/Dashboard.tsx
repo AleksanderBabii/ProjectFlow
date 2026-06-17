@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../../components/Header/Header';
-import BoardCard from '../../components/BoardCard/BoardCard';
+import Header from '../../components/header/Header';
+import BoardCard from '../../components/board/BoardCard/BoardCard';
 
 const Dashboard: React.FC = () => {
   return (
