@@ -1,28 +1,48 @@
-import { Request, Response, NextFunction } from "express";
+import type { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+import type { AuthRequest } from "../types/authRequest.js";
+import type { JwtPayload } from "../types/jwtPayload.js";
+
 export const protect = (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers.authorization;
+  const authHeader =
+    req.headers.authorization;
 
-  if (!authHeader?.startsWith("Bearer ")) {
+  if (
+    !authHeader ||
+    !authHeader.startsWith("Bearer ")
+  ) {
     return res.status(401).json({
       message: "Unauthorized",
     });
   }
 
   const token = authHeader.split(" ")[1];
+  if (!token) {
+    throw new Error("Token not found");
+  }
 
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    );
+      const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error("JWT secret is not defined");
+    }
 
-    req.user = decoded;
+    const decoded = jwt.verify(
+      token,secret
+    ) as JwtPayload;
+
+    if (typeof decoded !== "object" || decoded ===null) {
+      throw new Error("Invalid token payload");
+    }
+
+    req.user = {
+      userId: decoded.userId,
+    };
 
     next();
   } catch {
