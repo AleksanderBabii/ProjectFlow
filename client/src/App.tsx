@@ -1,17 +1,12 @@
-import { useState } from 'react'
-import Header from './components/header/Header'
-import Login from './pages/Login/Login'
 import './App.module.scss'
+import AppRoutes from './routes/AppRoutes'
 
 function App() {
-  const [isLoggedIn] = useState(false)
-
   return (
     <div className="App">
-      {isLoggedIn ? <Header /> : <Login />}
+      <AppRoutes />
     </div>
   )
-
 }
 
 export default App

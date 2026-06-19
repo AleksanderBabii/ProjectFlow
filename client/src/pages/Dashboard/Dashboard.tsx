@@ -1,18 +1,9 @@
-import React from 'react';
-import Header from '../../components/header/Header';
-import BoardCard from '../../components/board/BoardCard/BoardCard';
-
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   return (
-    <div className="dashboard">
-        <Header />  
-        <div className="board-list">
-            <BoardCard />
-            <BoardCard />
-            <BoardCard />   
-        </div>
+    <div>
+      <h1>Dashboard</h1>
     </div>
   );
-}
+};
 
 export default Dashboard;
