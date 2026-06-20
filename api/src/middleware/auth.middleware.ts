@@ -1,8 +1,8 @@
 import type { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-import type { AuthRequest } from "../types/authRequest.js";
-import type { JwtPayload } from "../types/jwtPayload.js";
+import type { AuthRequest } from "../types/authRequest.ts";
+import type { JwtPayload } from "../types/jwtPayload.ts";
 
 export const protect = (
   req: AuthRequest,

@@ -1,10 +1,15 @@
-import React from "react";
+import { Board } from "../../../types/board";
 
-const BoardCard: React.FC = () => {
+interface Props {
+  board: Board;
+}
+
+const BoardCard = ({
+  board,
+}: Props) => {
   return (
-    <div className="board-card">
-      <h3>Board Title</h3>
-      <p>Board description</p>
+    <div>
+      <h3>{board.title}</h3>
     </div>
   );
 };

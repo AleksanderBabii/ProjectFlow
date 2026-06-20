@@ -15,7 +15,7 @@ const PublicRoute = ({
 
   if (token) {
     return (
-      <Navigate to="/dashboard" />
+      <Navigate to="/dashboard" replace />
     );
   }
 

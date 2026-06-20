@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
+import { Prisma } from "@prisma/client";
 
 import {
   loginUser,
   registerUser,
-} from "../services/auth.services.js";
+} from "../services/auth.services.ts";
 
 export const register = async (
   req: Request,
@@ -14,6 +15,24 @@ export const register = async (
 
     return res.status(201).json(user);
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return res.status(409).json({
+        message: "Email already registered",
+      });
+    }
+
+    if (
+      error instanceof Error &&
+      error.message === "Email already registered"
+    ) {
+      return res.status(409).json({
+        message: error.message,
+      });
+    }
+
     return res.status(400).json({
       message:
         error instanceof Error

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import { prisma } from "../prisma/prisma.js";
-import { generateToken } from "../utils/jwt.js";
+import { prisma } from "../prisma/prisma.ts";
+import { generateToken } from "../utils/jwt.ts";
 
 interface RegisterInput {
   username: string;
@@ -18,12 +18,14 @@ export const registerUser = async ({
   email,
   password,
 }: RegisterInput) => {
+  const normalizedEmail = email.trim().toLowerCase();
+
   const existingUser = await prisma.user.findUnique({
-    where: { email },
+    where: { email: normalizedEmail },
   });
 
   if (existingUser) {
-    throw new Error("User already exists");
+    throw new Error("Email already registered");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,7 +33,7 @@ export const registerUser = async ({
   const user = await prisma.user.create({
     data: {
       username,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
     },
   });
@@ -47,18 +49,30 @@ export const loginUser = async ({
   email,
   password,
 }: LoginInput) => {
+  const normalizedEmail = email.trim().toLowerCase();
+
   const user = await prisma.user.findUnique({
-    where: { email },
+    where: { email: normalizedEmail },
   });
 
   if (!user) {
     throw new Error("Invalid credentials");
   }
 
-  const isMatch = await bcrypt.compare(
+  let isMatch = await bcrypt.compare(
     password,
     user.password
   );
+
+  if (!isMatch && user.password === password) {
+    // Legacy user with plain-text password: migrate to hashed password.
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword },
+    });
+    isMatch = true;
+  }
 
   if (!isMatch) {
     throw new Error("Invalid credentials");

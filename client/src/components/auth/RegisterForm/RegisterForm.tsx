@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 import {
   registerSchema,
@@ -11,6 +13,7 @@ import api from "../../../services/axios";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -31,6 +34,20 @@ const RegisterForm = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          error.response?.data?.message ||
+            error.message ||
+            "Registration failed."
+        );
+      } else {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Registration failed."
+        );
+      }
     }
   };
 
@@ -59,6 +76,10 @@ const RegisterForm = () => {
         placeholder="Password"
         {...register("password")}
       />
+
+      {errorMessage && (
+        <p className="error">{errorMessage}</p>
+      )}
 
       <button type="submit">
         Register

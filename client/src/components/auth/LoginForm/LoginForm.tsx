@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 import {
   loginSchema,
@@ -12,6 +14,7 @@ import { useAuthStore } from "../../../store/authStore";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const login = useAuthStore(
     (state) => state.login
@@ -39,13 +42,27 @@ const LoginForm = () => {
         response.data.user
       );
 
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       console.error(error);
+
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(
+          error.response?.data?.message ||
+            error.message ||
+            "Login failed."
+        );
+      } else {
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Login failed."
+        );
+      }
     }
   };
 
-  //Transfer buuton to the register page
+  //Transfer button to the register page
   const handleRegisterClick = () => {
     navigate("/register");
   };
@@ -53,6 +70,10 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h1>Login</h1>
+
+      {errorMessage && (
+        <p className="error">{errorMessage}</p>
+      )}
 
       <input
         type="email"
