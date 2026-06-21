@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "Board" ADD COLUMN     "description" TEXT NOT NULL;
+ALTER TABLE "Board" ADD COLUMN     "description" TEXT;

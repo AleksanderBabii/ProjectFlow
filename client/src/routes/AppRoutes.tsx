@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
   Navigate,
@@ -8,13 +7,13 @@ import {
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import Board from "../pages/Board/Board"
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter>
       <Routes>
         <Route
           path="/login"
@@ -45,8 +44,8 @@ const AppRoutes = () => {
 
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="/boards/:id" element = {<ProtectedRoute> <Board /></ProtectedRoute>} />
       </Routes>
-    </BrowserRouter>
   );
 };
 

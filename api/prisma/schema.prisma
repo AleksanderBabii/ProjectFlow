@@ -33,6 +33,7 @@ model Task {
   description String?
 
   status      String
+  priority    String   @default("medium")
 
   boardId     String
   board       Board    @relation(fields: [boardId], references: [id])

@@ -1,8 +1,7 @@
-.board-card {   
-  background-color: #ffffff; /* White background */
-  border-radius: 0.5rem; /* Rounded corners */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  padding: 1rem; /* Padding inside the card */
-  margin-bottom: 1rem; /* Space between cards */
+.card {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
-

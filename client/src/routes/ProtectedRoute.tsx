@@ -13,7 +13,11 @@ const ProtectedRoute = ({
     (state) => state.token
   );
 
-  if (!token) {
+  const user = useAuthStore(
+    (state) => state.user
+  );
+
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
   }
 

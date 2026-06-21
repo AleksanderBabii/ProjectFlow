@@ -7,11 +7,12 @@ export const getBoards = async () => {
 };
 
 export const createBoard = async (
-  title: string
+  title: string,
+  description?: string
 ) => {
   const response = await api.post(
     "/boards",
-    { title }
+    { title, description }
   );
 
   return response.data;

@@ -1,15 +1,33 @@
-import {Router} from 'express';
-import {TaskController} from '../controllers/task.controller.ts';
+import { Router } from "express";
+import {
+  createTask,
+  getTasksByBoard,
+  updateTask,
+  deleteTask,
+} from "../controllers/task.controller.ts";
+import { protect } from "../middleware/auth.middleware.ts";
 
 const router = Router();
-const taskController = new TaskController();
 
-router.get('/', (req, res) => {
-    res.send('Get all tasks');
-});
+router.use(protect);
 
-router.post('/', (req, res) => {
-    res.send('Create a new task');
-});
+router.get(
+    "/board/:boardId/tasks",
+    getTasksByBoard
+)
+
+router.post(
+    "/board/:boardId/tasks",
+    createTask
+)
+
+router.put(
+    "/task/:taskId",
+    updateTask
+)
+router.delete(
+    "/task/:taskId",
+    deleteTask
+)
 
 export default router;

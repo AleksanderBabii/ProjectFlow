@@ -1,5 +1,6 @@
 import type { Response } from "express";
 import type{ AuthRequest } from "../types/authRequest.ts";
+import {getBoardById} from "../services/board.services.ts"
 
 import {
   getBoards,
@@ -13,9 +14,15 @@ export const getAllBoards = async (
   res: Response
 ) => {
   try {
-    const boards = await getBoards(
-      req.user!.userId
-    );
+    const ownerId = req.user?.userId;
+
+    if (!ownerId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const boards = await getBoards(ownerId);
 
     return res.status(200).json(boards);
   } catch {
@@ -25,25 +32,7 @@ export const getAllBoards = async (
   }
 };
 
-export const createNewBoard = async (
-  req: AuthRequest,
-  res: Response
-) => {
-  try {
-    const board = await createBoard(
-      req.body.title,
-      req.user!.userId
-    );
-
-    return res.status(201).json(board);
-  } catch {
-    return res.status(400).json({
-      message: "Failed to create board",
-    });
-  }
-};
-
-export const editBoard = async (
+export const getBoard = async (
   req: AuthRequest,
   res: Response
 ) => {
@@ -53,10 +42,79 @@ export const editBoard = async (
       return res.status(400).json({ message: "Invalid board id" });
     }
 
+    const board = await getBoardById(
+      id,
+      req.user!.userId
+    );
+
+    return res.status(200).json(board);
+  } catch {
+    return res.status(404).json({
+      message: "Board not found",
+    });
+  }
+};
+
+export const createNewBoard = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { title, description } = req.body;
+    const ownerId = req.user?.userId;
+
+    if (!ownerId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    if (!title || typeof title !== "string") {
+      return res.status(400).json({
+        message: "Title is required",
+      });
+    }
+
+    const board = await createBoard(
+      title.trim(),
+      ownerId,
+      typeof description === "string" ? description.trim() : undefined
+    );
+
+    return res.status(201).json(board);
+  } catch (error) {
+    return res.status(400).json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to create board",
+    });
+  }
+};
+
+export const editBoard = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const ownerId = req.user?.userId;
+
+    if (!ownerId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const id = req.params.id;
+    if (!id || Array.isArray(id)) {
+      return res.status(400).json({ message: "Invalid board id" });
+    }
+
     const board = await updateBoard(
       id,
       req.body.title,
-      req.user!.userId
+      ownerId,
+      req.body.description
     );
 
     return res.status(200).json(board);
@@ -75,6 +133,14 @@ export const removeBoard = async (
   res: Response
 ) => {
   try {
+    const ownerId = req.user?.userId;
+
+    if (!ownerId) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
     const id = req.params.id;
     if (!id || Array.isArray(id)) {
       return res.status(400).json({ message: "Invalid board id" });
@@ -82,7 +148,7 @@ export const removeBoard = async (
 
     await deleteBoard(
       id,
-      req.user!.userId
+      ownerId
     );
 
     return res.status(204).send();
