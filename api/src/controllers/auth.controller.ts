@@ -1,5 +1,8 @@
 import type { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
+import type {AuthRequest} from "../types/authRequest.ts";
+import {getCurrentUser} from "../services/auth.services.ts";
+
 
 import {
   loginUser,
@@ -56,6 +59,26 @@ export const login = async (
         error instanceof Error
           ? error.message
           : "Login failed",
+    });
+  }
+};
+
+export const me = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const user = await getCurrentUser(
+      req.user!.userId
+    );
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(404).json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "User not found",
     });
   }
 };

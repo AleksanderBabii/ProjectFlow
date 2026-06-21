@@ -1,17 +1,24 @@
-import {Router} from "express";
+import { Router } from "express";
 
 import {
   getAllBoards,
   createNewBoard,
-  updateBoard,
-  deleteBoard,
+  editBoard,
+  removeBoard,
 } from "../controllers/board.controller.ts";
+
+import { protect } from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
+router.use(protect);
+
 router.get("/", getAllBoards);
+
 router.post("/", createNewBoard);
-router.put("/:id", updateBoard);
-router.delete("/:id", deleteBoard);
+
+router.put("/:id", editBoard);
+
+router.delete("/:id", removeBoard);
 
 export default router;

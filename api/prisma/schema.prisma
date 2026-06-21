@@ -19,7 +19,6 @@ model Board {
   id        String   @id @default(uuid())
   title     String
   description String?
-
   ownerId   String
   owner     User     @relation(fields: [ownerId], references: [id])
 

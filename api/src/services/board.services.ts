@@ -1,36 +1,79 @@
 //get the boards from the database
-
-import type { Board,Prisma } from "@prisma/client/edge";
 import { prisma } from "../prisma/prisma.ts";
 
-type BoardInput = Prisma.BoardCreateInput;
-
-export const getBoards = async (userId: string): Promise<Board[]> => {
-  const boards = await prisma.board.findMany({
+export const getBoards = async (
+  ownerId: string
+) => {
+  return prisma.board.findMany({
     where: {
-      ownerId: userId,
+      ownerId,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
-  return boards;
-}
+};
 
-export const createBoard = async (boardData: BoardInput): Promise<Board> => {
-  const board = await prisma.board.create({
-    data: boardData,
+export const createBoard = async (
+  title: string,
+  ownerId: string,
+  description: string
+) => {
+  return prisma.board.create({
+    data: {
+      title,
+      ownerId,
+      description,
+    },
   });
-  return board;
-}
+};
 
-export const updateBoard = async (id: string, boardData: Partial<BoardInput>): Promise<Board | null> => {
-  const board = await prisma.board.update({
-    where: { id },
-    data: boardData,
+export const updateBoard = async (
+  id: string,
+  title: string,
+  ownerId: string,
+  description: string
+) => {
+  const board = await prisma.board.findFirst({
+    where: {
+      id,
+      ownerId,
+    },
   });
-  return board;
-}
 
-export const deleteBoard = async (id: string): Promise<void> => {
-  await prisma.board.delete({
-    where: { id },
+  if (!board) {
+    throw new Error("Board not found");
+  }
+
+  return prisma.board.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+      description,
+    },
   });
-}
+};
+
+export const deleteBoard = async (
+  id: string,
+  ownerId: string
+) => {
+  const board = await prisma.board.findFirst({
+    where: {
+      id,
+      ownerId,
+    },
+  });
+
+  if (!board) {
+    throw new Error("Board not found");
+  }
+
+  return prisma.board.delete({
+    where: {
+      id,
+    },
+  });
+};
