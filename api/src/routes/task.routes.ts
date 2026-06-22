@@ -12,12 +12,12 @@ const router = Router();
 router.use(protect);
 
 router.get(
-    "/board/:boardId/tasks",
+    "/boards/:boardId/tasks",
     getTasksByBoard
 )
 
 router.post(
-    "/board/:boardId/tasks",
+    "/boards/:boardId/tasks",
     createTask
 )
 

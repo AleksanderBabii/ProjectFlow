@@ -21,4 +21,5 @@ export type Task = {
   boardId: string;
 
   createdAt: string;
-};
+}
+

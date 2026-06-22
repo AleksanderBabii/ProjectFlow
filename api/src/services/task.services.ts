@@ -11,18 +11,17 @@ export const getTasksByBoard = async (boardId: string) => {
     });
 }
 
-export const createTask = async (boardId: string,data:{
-    title: string, 
+export const createTask = async (boardId: string, data: {
+    title: string,
     description: string;
-    priority?: "low" | "medium" | "high";
-}
-) => {
+    priority?: "LOW" | "MEDIUM" | "HIGH";
+}) => {
     return prisma.task.create({
         data: {
             title: data.title,
             description: data.description,
-            priority: data.priority ?? "medium",
-            status: "ToDo",
+            priority: data.priority ?? "MEDIUM",
+            status: "TODO",
             boardId: boardId,
         },
     });
@@ -31,14 +30,14 @@ export const createTask = async (boardId: string,data:{
 export const updateTask = async (taskId: string, data: {
     title?: string;
     description?: string;
-    priority?: "low" | "medium" | "high";
-    status?: "ToDo" | "InProgress" | "Done";
+    priority?: "LOW" | "MEDIUM" | "HIGH";
+    status?: "TODO" | "IN_PROGRESS" | "DONE";
 }) => {
     const updateData: {
         title?: string;
         description?: string;
-        priority?: "low" | "medium" | "high";
-        status?: "ToDo" | "InProgress" | "Done";
+        priority?: "LOW" | "MEDIUM" | "HIGH";
+        status?: "TODO" | "IN_PROGRESS" | "DONE";
     } = {};
 
     if (data.title !== undefined) {

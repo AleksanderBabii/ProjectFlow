@@ -16,17 +16,13 @@ const BoardCard = ({
   const handleClick = () => {
     navigate(`/boards/${board.id}`);
   };
-  
-  <div
-  className={styles.card}
-  onClick={handleClick}
-></div>
 
   return (
-    <div onClick={handleClick}>
-      <h3>{board.title}</h3>
+    <div className={styles.card} onClick={handleClick}>
+      <div>
+        <h1>{board.title}</h1>
+      </div>
     </div>
-    
   );
 };
 
