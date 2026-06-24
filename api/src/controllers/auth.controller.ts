@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { Prisma } from "@prisma/client";
+import { Prisma  } from "@prisma/client";
 import type {AuthRequest} from "../types/authRequest.ts";
 import {getCurrentUser} from "../services/auth.services.ts";
 
@@ -17,7 +17,7 @@ export const register = async (
     const user = await registerUser(req.body);
 
     return res.status(201).json(user);
-  } catch (error) {
+  } catch (error:any) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"

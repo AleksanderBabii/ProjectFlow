@@ -26,3 +26,31 @@ export const createTask = async (
 
   return response.data;
 };
+
+export const updateTask = async (
+  taskId: string, 
+  data: {
+    title?: string;
+    description?: string;
+    status?: string;
+    priority?: string;
+  }
+) => {
+  const response = 
+    await api.put(
+      `/task/${taskId}`,
+      data
+    );
+
+    return response.data;
+};
+
+export const deleteTask = async (
+  taskId: string
+) => {
+  const response = await api.delete(
+    `/task/${taskId}`
+  );
+
+  return response.data;
+};

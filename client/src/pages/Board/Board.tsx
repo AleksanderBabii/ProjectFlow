@@ -1,9 +1,15 @@
 import { useParams } from "react-router-dom";
 
+//hooks
 import { useBoard } from "../../hooks/useBoard";
 import { useTasks } from "../../hooks/useTasks";
 
+import { useCreateTask } from "../../hooks/useCreateTasks"; 
+import { useUpdateTask } from "../../hooks/useUpdateTasks";
+import { useDeleteTask } from "../../hooks/useDeleteTask";
+
 import TaskCard from "../../components/task/TaskCard/TaskCard";
+import  CreateTaskForm from "../../components/task/TaskForm/CreateTaskForm"
 
 import { Task } from "../../types/task";
 
@@ -22,6 +28,10 @@ const Board = () => {
     error: tasksError,
   } = useTasks(id!);
 
+  const createTaskMutation = useCreateTask(id!);
+  const updateTaskMutation = useUpdateTask(id!);
+  const deleteTaskMutation = useDeleteTask(id!);
+
   if (boardLoading || tasksLoading) {
     return <p>Loading...</p>;
   }
@@ -30,6 +40,7 @@ const Board = () => {
     return <p>Failed to load board data.</p>;
   }
 
+  //normalizer
   const normalizeStatus = (status: string) => {
     const value = status?.toUpperCase().replace(/\s+/g, "_");
 
@@ -61,28 +72,68 @@ const Board = () => {
       (task: Task) => normalizeStatus(task.status) === "DONE"
     ) || [];
 
-  const otherTasks =
-    tasks?.filter(
-      (task: Task) => {
-        const normalized = normalizeStatus(task.status);
-        return (
-          normalized !== "TODO" &&
-          normalized !== "IN_PROGRESS" &&
-          normalized !== "DONE"
-        );
-      }
-    ) || [];
+  // const otherTasks =
+  //   tasks?.filter(
+  //     (task: Task) => {
+  //       const normalized = normalizeStatus(task.status);
+  //       return (
+  //         normalized !== "TODO" &&
+  //         normalized !== "IN_PROGRESS" &&
+  //         normalized !== "DONE"
+  //       );
+  //     }
+  //   ) || [];
+
+  const handleMoveTask = (
+    task: Task
+  ) => {
+    let nextStatus =
+      task.status;
+
+    if (
+      task.status === "TODO"
+    ) {
+      nextStatus =
+        "IN_PROGRESS";
+    } else if (
+      task.status ===
+      "IN_PROGRESS"
+    ) {
+      nextStatus = "DONE";
+    }
+
+    updateTaskMutation.mutate({
+      taskId: task.id,
+      data: {
+        status: nextStatus,
+      },
+    });
+  };
+
+  const handleDeleteTask = (
+    taskId: string
+  ) => {
+    deleteTaskMutation.mutate(
+      taskId
+    );
+  };
 
   return (
     <div>
       <h1>{board.title}</h1>
+
+      <CreateTaskForm
+        onCreateTask={(title) => {
+          createTaskMutation.mutate(title);
+        }}
+      />
 
       <div
         style={{
           display: "flex",
           gap: "2rem",
           alignItems: "flex-start",
-        }}
+        }} // REMOVE THIS
       >
         {/* TODO */}
         <div>
@@ -91,28 +142,47 @@ const Board = () => {
           {todoTasks.length === 0 ? (
             <p>No tasks</p>
           ) : (
-            todoTasks.map((task: Task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-              />
-            ))
+            todoTasks.map(
+              (task: Task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onMove={
+                    handleMoveTask
+                  }
+                  onDelete={
+                    handleDeleteTask
+                  }
+                />
+              )
+            )
           )}
         </div>
 
         {/* IN PROGRESS */}
         <div>
-          <h2>IN PROGRESS</h2>
+          <h2>
+            IN PROGRESS
+          </h2>
 
-          {inProgressTasks.length === 0 ? (
+          {inProgressTasks.length ===
+          0 ? (
             <p>No tasks</p>
           ) : (
-            inProgressTasks.map((task: Task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-              />
-            ))
+            inProgressTasks.map(
+              (task: Task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onMove={
+                    handleMoveTask
+                  }
+                  onDelete={
+                    handleDeleteTask
+                  }
+                />
+              )
+            )
           )}
         </div>
 
@@ -123,12 +193,20 @@ const Board = () => {
           {doneTasks.length === 0 ? (
             <p>No tasks</p>
           ) : (
-            doneTasks.map((task: Task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-              />
-            ))
+            doneTasks.map(
+              (task: Task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onMove={
+                    handleMoveTask
+                  }
+                  onDelete={
+                    handleDeleteTask
+                  }
+                />
+              )
+            )
           )}
         </div>
       </div>
