@@ -40,14 +40,14 @@ export const createTask = async (
     }
 
     const { title, description, priority } = req.body;
-    if (!title || typeof title !== "string" || !description || typeof description !== "string") {
-      return res.status(400).json({ message: "Title and description are required" });
+    if (!title || typeof title !== "string") {
+      return res.status(400).json({ message: "Title is required" });
     }
 
     const task = await createTaskService(boardId, {
       title,
       description,
-      priority,
+      priority: priority ?? "MEDIUM",
     });
 
     return res.status(201).json(task);

@@ -51,10 +51,14 @@ export const loginUser = async ({
 }: LoginInput) => {
   const normalizedEmail = email.trim().toLowerCase();
 
+  console.log("LOGIN EMAIL:", normalizedEmail);
+
   const user = await prisma.user.findUnique({
     where: { email: normalizedEmail },
   });
 
+  console.log("USER FOUND:", user);
+  
   if (!user) {
     throw new Error("Invalid credentials");
   }
@@ -63,6 +67,8 @@ export const loginUser = async ({
     password,
     user.password
   );
+
+  console.log("PASSWORD MATCH:", isMatch);
 
   if (!isMatch && user.password === password) {
     // Legacy user with plain-text password: migrate to hashed password.

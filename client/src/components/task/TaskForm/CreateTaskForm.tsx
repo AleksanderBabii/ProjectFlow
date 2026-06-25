@@ -1,20 +1,14 @@
 import { useState } from "react";
+import styles from "./CreateTaskForm.module.scss";
 
 interface Props {
-  onCreateTask: (
-    title: string
-  ) => void;
+  onCreateTask: (title: string) => void;
 }
 
-const CreateTaskForm = ({
-  onCreateTask,
-}: Props) => {
-  const [title, setTitle] =
-    useState("");
+const CreateTaskForm = ({ onCreateTask }: Props) => {
+  const [title, setTitle] = useState("");
 
-  const handleSubmit = (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) return;
@@ -25,18 +19,14 @@ const CreateTaskForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <form className={styles.form} onSubmit={handleSubmit} >
+      <input className="styles.input"
         value={title}
-        onChange={(e) =>
-          setTitle(e.target.value)
-        }
+        onChange={(e) => setTitle(e.target.value)}
         placeholder="Task title"
       />
 
-      <button type="submit">
-        Create Task
-      </button>
+      <button className={styles.button} type="submit" >Create Task</button>
     </form>
   );
 };
