@@ -12,7 +12,7 @@ import TaskCard from "../../components/task/TaskCard/TaskCard";
 import CreateTaskForm from "../../components/task/TaskForm/CreateTaskForm";
 import TaskColumn from "../../components/task/TaskColumn/TaskColumn";
 
-import { Task } from "../../types/task";
+import { Task, TaskPriority } from "../../types/task";
 
 import styles from "./Board.module.scss";
 
@@ -77,19 +77,14 @@ const Board = () => {
     tasks?.filter((task: Task) => normalizeStatus(task.status) === "DONE") ||
     [];
 
-  // const otherTasks =
-  //   tasks?.filter(
-  //     (task: Task) => {
-  //       const normalized = normalizeStatus(task.status);
-  //       return (
-  //         normalized !== "TODO" &&
-  //         normalized !== "IN_PROGRESS" &&
-  //         normalized !== "DONE"
-  //       );
-  //     }
-  //   ) || [];
+  const handleCreateTask = (title: string, priority: TaskPriority) => {
+    createTaskMutation.mutate({
+      title,
+      priority,
+    });
+  };
 
-  const handleMoveTask = (task: Task) => {
+  const handleMoveRight = (task: Task) => {
     let nextStatus = task.status;
 
     if (task.status === "TODO") {
@@ -106,16 +101,37 @@ const Board = () => {
     });
   };
 
+  const handleMoveLeft = (task: Task) => {
+    let nextStatus = task.status;
+
+    if (task.status === "DONE") {
+      nextStatus = "IN_PROGRESS";
+    } else if (task.status === "IN_PROGRESS") {
+      nextStatus = "TODO";
+    }
+
+    updateTaskMutation.mutate({
+      taskId: task.id,
+      data: {
+        status: nextStatus,
+      },
+    });
+  };
+
   const handleDeleteTask = (taskId: string) => {
     deleteTaskMutation.mutate(taskId);
   };
 
-  const handleEditTask = (taskId: string, title: string) => {
+  const handleEditTask = (
+    taskId: string,
+    title: string,
+    priority: TaskPriority,
+  ) => {
     updateTaskMutation.mutate({
       taskId,
-
       data: {
         title,
+        priority,
       },
     });
   };
@@ -124,14 +140,9 @@ const Board = () => {
     <div className={styles.page}>
       <h1 className={styles.title}>{board.title}</h1>
 
-      <CreateTaskForm
-        onCreateTask={(title) => {
-          createTaskMutation.mutate(title);
-        }}
-      />
+      <CreateTaskForm onCreateTask={handleCreateTask} />
 
       <div className={styles.columns}>
-
         {/* TODO */}
         <TaskColumn title="TODO">
           {todoTasks.length === 0 ? (
@@ -141,7 +152,8 @@ const Board = () => {
               <TaskCard
                 key={task.id}
                 task={task}
-                onMove={handleMoveTask}
+                onMoveLeft={handleMoveLeft}
+                onMoveRight={handleMoveRight}
                 onDelete={handleDeleteTask}
                 onEdit={handleEditTask}
               />
@@ -158,7 +170,8 @@ const Board = () => {
               <TaskCard
                 key={task.id}
                 task={task}
-                onMove={handleMoveTask}
+                onMoveLeft={handleMoveLeft}
+                onMoveRight={handleMoveRight}
                 onDelete={handleDeleteTask}
                 onEdit={handleEditTask}
               />
@@ -175,7 +188,8 @@ const Board = () => {
               <TaskCard
                 key={task.id}
                 task={task}
-                onMove={handleMoveTask}
+                onMoveLeft={handleMoveLeft}
+                onMoveRight={handleMoveRight}
                 onDelete={handleDeleteTask}
                 onEdit={handleEditTask}
               />

@@ -1,4 +1,5 @@
 import  api  from "../services/axios";
+import { TaskPriority } from "../types/task";
 
 export const getTasks = async (
   boardId: string
@@ -15,7 +16,7 @@ export const createTask = async (
   boardId: string,
   task: {
     title: string;
-    description?: string;
+    priority: TaskPriority;
   }
 ) => {
   const response =
@@ -28,29 +29,31 @@ export const createTask = async (
 };
 
 export const updateTask = async (
-  taskId: string, 
+  taskId: string,
   data: {
     title?: string;
     description?: string;
     status?: string;
-    priority?: string;
+    priority?: TaskPriority;
+    dueDate?: string;
   }
 ) => {
-  const response = 
+  const response =
     await api.put(
       `/task/${taskId}`,
       data
     );
 
-    return response.data;
+  return response.data;
 };
 
 export const deleteTask = async (
   taskId: string
 ) => {
-  const response = await api.delete(
-    `/task/${taskId}`
-  );
+  const response =
+    await api.delete(
+      `/task/${taskId}`
+    );
 
   return response.data;
 };
