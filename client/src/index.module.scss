@@ -1,3 +1,11 @@
+@forward "./styles/abstracts/variables";
+@forward "./styles/abstracts/mixins";
+
+@use "./styles/base/reset";
+@use "./styles/base/typography";
+@use "./styles/base/global";
+
+
 :root {
   background-color: #f0f0f0; /* Light gray background */
   min-height: 100vh; /* Full viewport height */

@@ -1,4 +1,7 @@
 import { useState } from "react";
+//ui
+import Button from "../../ui/Button/Button";
+import Input from "../../ui/Input/input"
 
 const BoardForm = () => {
   const [title, setTitle] =
@@ -6,7 +9,7 @@ const BoardForm = () => {
 
   return (
     <form>
-      <input
+      <Input
         value={title}
         onChange={(e) =>
           setTitle(e.target.value)
@@ -14,9 +17,9 @@ const BoardForm = () => {
         placeholder="Board title"
       />
 
-      <button type="submit">
+      <Button type="submit">
         Create
-      </button>
+      </Button>
     </form>
   );
 };

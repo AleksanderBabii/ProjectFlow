@@ -3,6 +3,9 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { Board } from "../../../types/board";
 import { createBoard, getBoards } from "../../../api/boardApi";
 import BoardCard from "../BoardCard/BoardCard";
+//ui
+import Button from "../../ui/Button/Button"
+import Input from "../../ui/Input/input"
  
 const BoardList = () => {
   const [newTitle, setNewTitle] = useState("");
@@ -43,7 +46,7 @@ return (
   <div>
     <h2>Your Boards</h2>
 
-    <input
+    <Input
       value={newTitle}
       onChange={(e) => setNewTitle(e.target.value)}
       placeholder="Board title"
@@ -54,7 +57,7 @@ return (
         key ={board.id}
         board={board}/>))}
         
-    <button onClick={handleCreateBoard}>Create Board</button>
+    <Button onClick={handleCreateBoard}>Create Board</Button>
   </div>
 );
 };

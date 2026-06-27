@@ -3,17 +3,19 @@ import { useParams } from "react-router-dom";
 //hooks
 import { useBoard } from "../../hooks/useBoard";
 import { useTasks } from "../../hooks/useTasks";
-
 import { useCreateTask } from "../../hooks/useCreateTasks";
 import { useUpdateTask } from "../../hooks/useUpdateTasks";
 import { useDeleteTask } from "../../hooks/useDeleteTask";
 
+//components
 import TaskCard from "../../components/task/TaskCard/TaskCard";
 import CreateTaskForm from "../../components/task/TaskForm/CreateTaskForm";
 import TaskColumn from "../../components/task/TaskColumn/TaskColumn";
 
+//types
 import { Task, TaskPriority } from "../../types/task";
 
+//scss
 import styles from "./Board.module.scss";
 
 const Board = () => {

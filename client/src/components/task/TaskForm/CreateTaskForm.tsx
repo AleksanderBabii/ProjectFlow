@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styles from "./CreateTaskForm.module.scss";
 import { TaskPriority } from "../../../types/task";
+import Button from "../../ui/Button/Button";
+import Input from "../../ui/Input/input";
+import Select from "../../ui/Select/Select";
 
 interface Props {
   onCreateTask: (title: string, priority: TaskPriority) => void;
@@ -25,37 +28,27 @@ const CreateTaskForm = ({ onCreateTask }: Props) => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <input
+      <Input
         className={styles.input}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Task title"
       />
 
-      <select
-        className={styles.select}
+      <Select
+        fullWidth
         value={priority}
-        onChange={(e)=>
-          setPriority(
-            e.target.value as TaskPriority
-          )
-        }>
-          <option value="LOW">
-            LOW 
-          </option>
+        onChange={(e) => setPriority(e.target.value as TaskPriority)}
+        options={[
+          { value: "LOW", label: "🟢 Low" },
+          { value: "MEDIUM", label: "🟡 Medium" },
+          { value: "HIGH", label: "🔴 High" },
+        ]}
+      />
 
-          <option value="MEDIUM">
-            MEDIUM 
-          </option>
-
-          <option value="HIGH">
-            HIGH 
-          </option>
-      </select>
-
-      <button className={styles.button} type="submit">
+      <Button className={styles.button} type="submit">
         Create Task
-      </button>
+      </Button>
     </form>
   );
 };

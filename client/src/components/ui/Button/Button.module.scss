@@ -1,0 +1,86 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  border-radius: $radius-md;
+
+  font-weight: 600;
+
+  transition: $transition;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: .5rem;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* Variants */
+
+.primary {
+  background: $primary;
+  color: white;
+}
+
+.primary:hover {
+  background: $primary-hover;
+}
+
+.secondary {
+  background: white;
+  color: $text-primary;
+  border: 1px solid $border;
+}
+
+.secondary:hover {
+  background: #f3f4f6;
+}
+
+.success {
+  background: $success;
+  color: white;
+}
+
+.danger {
+  background: $danger;
+  color: white;
+}
+
+/* Sizes */
+
+.sm {
+  padding: .45rem .8rem;
+  font-size: .85rem;
+}
+
+.md {
+  padding: .7rem 1.2rem;
+  font-size: .95rem;
+}
+
+.lg {
+  padding: .9rem 1.5rem;
+  font-size: 1rem;
+}
+
+.fullWidth {
+  width: 100%;
+}

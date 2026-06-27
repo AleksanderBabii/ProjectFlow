@@ -1,0 +1,43 @@
+@use "./variables" as *;
+
+@mixin card {
+    background: $surface;
+
+    border: 1px solid $border;
+
+    border-radius: $radius-md;
+
+    box-shadow: $shadow-sm;
+}
+
+@mixin button {
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    border-radius: $radius-sm;
+
+    transition: $transition;
+}
+
+@mixin flex-center {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+@mixin column {
+    display: flex;
+
+    flex-direction: column;
+}
+
+@mixin row {
+    display: flex;
+
+    align-items: center;
+}

@@ -1,5 +1,6 @@
 import  api  from "../services/axios";
 import { TaskPriority } from "../types/task";
+import { UpdateTaskData } from "../types/task";
 
 export const getTasks = async (
   boardId: string
@@ -30,13 +31,7 @@ export const createTask = async (
 
 export const updateTask = async (
   taskId: string,
-  data: {
-    title?: string;
-    description?: string;
-    status?: string;
-    priority?: TaskPriority;
-    dueDate?: string;
-  }
+  data: UpdateTaskData,
 ) => {
   const response =
     await api.put(

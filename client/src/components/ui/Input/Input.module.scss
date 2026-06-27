@@ -1,0 +1,67 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.label {
+  font-size: .9rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.input {
+  width: 100%;
+
+  padding: .75rem 1rem;
+
+  border: 1px solid $border;
+
+  border-radius: $radius-md;
+
+  background: $surface;
+
+  color: $text-primary;
+
+  transition: $transition;
+
+  font-size: .95rem;
+}
+
+.input::placeholder {
+  color: $text-secondary;
+}
+
+.input:focus {
+  outline: none;
+
+  border-color: $primary;
+
+  box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+}
+
+.input:hover {
+  border-color: #cbd5e1;
+}
+
+.error {
+  border-color: $danger;
+}
+
+.error:focus {
+  box-shadow: 0 0 0 3px rgba(239,68,68,.15);
+}
+
+.errorMessage {
+  color: $danger;
+
+  font-size: .8rem;
+
+  font-weight: 500;
+}

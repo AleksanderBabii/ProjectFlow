@@ -9,6 +9,9 @@ import { loginSchema, LoginFormData } from "../../../schemas/loginSchema";
 import api from "../../../services/axios";
 import { useAuthStore } from "../../../store/authStore";
 
+import Input from "../../ui/Input";
+import Button from "../../ui/Button/Button"
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -56,18 +59,18 @@ const LoginForm = () => {
 
       {errorMessage && <p className="error">{errorMessage}</p>}
 
-      <input type="email" placeholder="Email" {...register("email")} />
+      <Input type="email" placeholder="Email" {...register("email")} />
 
       {errors.email && <p>{errors.email.message}</p>}
 
-      <input type="password" placeholder="Password" {...register("password")} />
+      <Input type="password" placeholder="Password" {...register("password")} />
 
       {errors.password && <p>{errors.password.message}</p>}
 
-      <button type="submit">Login</button>
-      <button type="button" onClick={handleRegisterClick}>
+      <Button type="submit">Login</Button>
+      <Button type="button" onClick={handleRegisterClick}>
         Not with us yet? Register here!
-      </button>
+      </Button>
     </form>
   );
 };

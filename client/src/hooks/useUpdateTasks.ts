@@ -1,14 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TaskPriority } from "../types/task";
+import { UpdateTaskData } from "../types/task";
 import { updateTask } from "../api/taskApi";
 
-type UpdateTaskData = {
-  title?: string;
-  description?: string;
-  status?: string;
-  priority?: TaskPriority;
-  dueDate?: string;
-};
+
 export const useUpdateTask = (boardId: string) => {
   const queryClient = useQueryClient();
 

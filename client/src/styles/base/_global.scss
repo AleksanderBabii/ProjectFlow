@@ -1,0 +1,27 @@
+@use "../abstracts/variables" as *;
+
+body {
+    background: $background;
+}
+
+button {
+    font: inherit;
+}
+
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+a {
+    text-decoration: none;
+
+    color: inherit;
+}
+
+img {
+    display: block;
+
+    max-width: 100%;
+}

@@ -23,3 +23,11 @@ export type Task = {
   createdAt: string;
 };
 
+export type UpdateTaskData = {
+  title?: string;
+  description?: string;
+  status?: TaskStatus;
+  priority?: TaskPriority;
+  dueDate?: string;
+};
+

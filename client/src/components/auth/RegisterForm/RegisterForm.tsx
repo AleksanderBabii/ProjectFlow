@@ -11,6 +11,9 @@ import {
 
 import api from "../../../services/axios";
 
+import Input from "../../ui/Input";
+import Button from "../../ui/Button/Button"
+
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -60,18 +63,18 @@ const RegisterForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <h1>Register</h1>
 
-      <input
+      <Input
         placeholder="Username"
         {...register("username")}
       />
 
-      <input
+      <Input
         type="email"
         placeholder="Email"
         {...register("email")}
       />
 
-      <input
+      <Input
         type="password"
         placeholder="Password"
         {...register("password")}
@@ -81,15 +84,15 @@ const RegisterForm = () => {
         <p className="error">{errorMessage}</p>
       )}
 
-      <button type="submit">
+      <Button type="submit">
         Register
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
         onClick={handleLoginClick}
       >
         Already have an account? Login here!
-      </button>
+      </Button>
     </form>
   );
 };

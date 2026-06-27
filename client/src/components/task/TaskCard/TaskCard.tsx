@@ -1,6 +1,10 @@
 import { useState } from "react";
 import styles from "./TaskCard.module.scss";
 import { Task, TaskPriority } from "../../../types/task";
+import Button from "../../ui/Button/Button";
+import Badge from "../../ui/Badge/Badge";
+import Input from "../../ui/Input/input";
+import Select from "../../ui/Select/Select";
 
 interface TaskCardProps {
   task: Task;
@@ -45,38 +49,47 @@ const TaskCard = ({
     setIsEditing(false);
   };
 
-  const priorityLabel = {
-    LOW: "🟢 LOW",
-    MEDIUM: "🟡 MEDIUM",
-    HIGH: "🔴 HIGH",
+  const getPriorityVariant = () => {
+    switch (task.priority) {
+      case "LOW":
+        return "low";
+
+      case "MEDIUM":
+        return "medium";
+
+      case "HIGH":
+        return "high";
+
+      default:
+        return "default";
+    }
   };
 
   return (
     <div className={styles.card}>
       {isEditing ? (
         <>
-          <input
+          <Input
             className={styles.title}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <select
-            className={styles.select}
+          <Select
+            fullWidth
             value={priority}
             onChange={(e) => setPriority(e.target.value as TaskPriority)}
-          >
-            <option value="LOW">LOW</option>
-
-            <option value="MEDIUM">MEDIUM</option>
-
-            <option value="HIGH">HIGH</option>
-          </select>
+            options={[
+              { value: "LOW", label: "🟢 Low" },
+              { value: "MEDIUM", label: "🟡 Medium" },
+              { value: "HIGH", label: "🔴 High" },
+            ]}
+          />
         </>
       ) : (
         <>
           <h4 className={styles.title}>{task.title}</h4>
-          <p className={styles.priority}>Priority: {priorityLabel[task.priority]}</p>
+          <Badge variant={getPriorityVariant()}>{task.priority}</Badge>
           {task.description && <p>{task.description}</p>}{" "}
         </>
       )}
@@ -84,45 +97,45 @@ const TaskCard = ({
       <div className={styles.actions}>
         {isEditing ? (
           <>
-            <button className={styles.actions} onClick={handleSave}>
+            <Button className={styles.actions} onClick={handleSave}>
               Save
-            </button>
+            </Button>
 
-            <button className={styles.actions} onClick={handleCancel}>
+            <Button className={styles.actions} onClick={handleCancel}>
               Cancel
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button
+            <Button
               className={styles.actions}
               onClick={() => setIsEditing(true)}
             >
               Edit
-            </button>
+            </Button>
 
-            <button
+            <Button
               className={styles.actions}
               onClick={() => onMoveLeft(task)}
               disabled={task.status === "DONE"}
             >
               ⬅️
-            </button>
+            </Button>
 
-            <button
+            <Button
               className={styles.actions}
               onClick={() => onMoveRight(task)}
               disabled={task.status === "DONE"}
             >
               ➡️
-            </button>
+            </Button>
 
-            <button
+            <Button
               className={styles.actions}
               onClick={() => onDelete(task.id)}
             >
               Delete
-            </button>
+            </Button>
           </>
         )}
       </div>
