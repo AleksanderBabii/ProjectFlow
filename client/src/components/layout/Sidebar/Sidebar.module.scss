@@ -1,0 +1,16 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  background: $background;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.content {
+  padding: $space-xl;
+}
