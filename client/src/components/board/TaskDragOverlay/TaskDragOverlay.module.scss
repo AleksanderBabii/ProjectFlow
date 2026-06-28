@@ -1,0 +1,41 @@
+@use "../../../styles/abstracts//variables" as *;
+
+.overlay {
+  width: 320px;
+
+  cursor: grabbing;
+
+  opacity: 0.95;
+
+  transform: rotate(3deg);
+
+  box-shadow: $shadow-sm;
+
+  pointer-events: none;
+}
+
+.title {
+  margin-bottom: $space-sm;
+}
+
+.description {
+  margin-bottom: $space-md;
+
+  color: $text-secondary;
+
+  line-height: 1.5;
+}
+
+.footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+.date {
+  font-size: .85rem;
+
+  color: $text-secondary;
+}

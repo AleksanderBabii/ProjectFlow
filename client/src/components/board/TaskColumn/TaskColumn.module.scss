@@ -1,0 +1,83 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.column {
+  min-width: 340px;
+  min-height: 650px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: $surface;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: $space-lg;
+  padding-bottom: $space-md;
+
+  border-bottom: 1px solid $border;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.header span {
+  color: $text-secondary;
+  font-size: .9rem;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  flex: 1;
+}
+
+.isOver {
+  border-color: $primary;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+  transform: translateY(-2px);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: $space-xs;
+
+  flex: 1;
+  min-height: 140px;
+
+  border: 2px dashed $border;
+  border-radius: $radius-md;
+
+  color: $text-secondary;
+  text-align: center;
+
+  transition: $transition;
+}
+
+.emptyIcon {
+  font-size: 1.8rem;
+}
+
+.empty strong {
+  color: $text-primary;
+}
+
+.empty p {
+  max-width: 220px;
+  font-size: 0.85rem;
+}
+
+.emptyActive {
+  border-color: $primary;
+  background: rgba(79, 70, 229, 0.08);
+}

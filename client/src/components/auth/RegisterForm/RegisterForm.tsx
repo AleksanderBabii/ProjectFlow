@@ -2,96 +2,76 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 
 import {
   registerSchema,
   RegisterFormData,
 } from "../../../schemas/registerSchema";
 
-import api from "../../../services/axios";
+import { registerUser } from "../../../api/authApi";
 
 import Input from "../../ui/Input";
-import Button from "../../ui/Button/Button"
+import Button from "../../ui/Button";
+
+import styles from "./RegisterForm.module.scss";
 
 const RegisterForm = () => {
+  const [serverError, setServerError] = useState("");
+
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (
-    data: RegisterFormData
-  ) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      await api.post(
-        "/auth/register",
-        data
-      );
+      setServerError("");
+
+      await registerUser(data.username, data.email, data.password);
 
       navigate("/login");
-    } catch (error) {
-      console.error(error);
-
-      if (axios.isAxiosError(error)) {
-        setErrorMessage(
-          error.response?.data?.message ||
-            error.message ||
-            "Registration failed."
-        );
-      } else {
-        setErrorMessage(
-          error instanceof Error
-            ? error.message
-            : "Registration failed."
-        );
-      }
+    } catch {
+      setServerError("Registration failed. Email may already be used.");
     }
   };
 
-  //Transfer button to the login page
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>Register</h1>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      {serverError && <p className={styles.error}>{serverError}</p>}
 
       <Input
-        placeholder="Username"
+        label="Username"
+        placeholder="Alex"
+        error={errors.username?.message}
+        fullWidth
         {...register("username")}
       />
 
       <Input
+        label="Email"
         type="email"
-        placeholder="Email"
+        placeholder="you@example.com"
+        error={errors.email?.message}
+        fullWidth
         {...register("email")}
       />
 
       <Input
+        label="Password"
         type="password"
-        placeholder="Password"
+        placeholder="Minimum 8 characters"
+        error={errors.password?.message}
+        fullWidth
         {...register("password")}
       />
 
-      {errorMessage && (
-        <p className="error">{errorMessage}</p>
-      )}
-
-      <Button type="submit">
-        Register
-      </Button>
-      <Button
-        type="button"
-        onClick={handleLoginClick}
-      >
-        Already have an account? Login here!
+      <Button type="submit" fullWidth loading={isSubmitting}>
+        Create Account
       </Button>
     </form>
   );

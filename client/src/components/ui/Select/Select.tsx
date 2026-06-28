@@ -56,6 +56,7 @@ const Select = forwardRef<
         >
           {options.map((option) => (
             <option
+            aria-placeholder="Task Priority"
               key={option.value}
               value={option.value}
             >

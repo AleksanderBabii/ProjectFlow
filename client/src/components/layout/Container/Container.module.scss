@@ -1,0 +1,16 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.container {
+  width: 100%;
+  max-width: $container-width;
+
+  margin: 0 auto;
+
+  padding: $space-xl;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: $space-lg;
+  }
+}

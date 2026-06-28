@@ -1,0 +1,85 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $space-sm;
+}
+
+.dragHandle {
+  border: none;
+  background: transparent;
+  cursor: grab;
+  color: $text-secondary;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.card {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.dragging {
+  opacity: 0.35;
+}
+
+.title {
+  margin: 0;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  color: $text-primary;
+}
+
+.description {
+  color: $text-secondary;
+
+  line-height: 1.5;
+
+  font-size: .95rem;
+
+  min-height: 44px;
+}
+
+.meta {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+.date {
+  font-size: .85rem;
+
+  color: $text-secondary;
+}
+
+.footer {
+  display: flex;
+
+  gap: $space-sm;
+
+  margin-top: auto;
+}
+
+.footer button {
+  flex: 1;
+}
+
+

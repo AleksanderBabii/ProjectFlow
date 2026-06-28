@@ -1,12 +1,17 @@
-import BoardList from "../../components/board/BoardList/BoardList";
-import { useAuthStore } from "../../store/authStore";
-import {useNavigate} from "react-router-dom";
-import Header from "../../components/Header/Header"
-import Button from "../../components/ui/Button/Button"
+import { useNavigate } from "react-router-dom";
 
+import { useAuthStore } from "../../store/authStore";
+
+import Container from "../../components/layout/Container";
+import PageHeader from "../../components/layout/PageHeader";
+
+import Button from "../../components/ui/Button";
+
+import BoardList from "../../components/board/BoardList/BoardList";
 
 const Dashboard = () => {
   const logout = useAuthStore((state) => state.logout);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,11 +20,22 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <Button onClick={handleLogout}>Logout</Button>
+    <Container>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Manage all your project boards"
+        actions={
+          <Button
+            variant="danger"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        }
+      />
+
       <BoardList />
-    </div>
+    </Container>
   );
 };
 

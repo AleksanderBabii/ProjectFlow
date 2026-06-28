@@ -1,0 +1,19 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.card {
+  background: $surface;
+
+  border-radius: $radius-lg;
+
+  border: 1px solid $border;
+
+  box-shadow: $shadow-sm;
+
+  padding: $space-lg;
+
+  transition: $transition;
+}
+
+.card:hover {
+  box-shadow: $shadow-md;
+}

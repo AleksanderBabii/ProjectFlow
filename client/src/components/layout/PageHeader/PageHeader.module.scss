@@ -1,0 +1,28 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: $space-2xl;
+
+  gap: $space-lg;
+
+  flex-wrap: wrap;
+}
+
+.header h1 {
+  margin-bottom: .4rem;
+}
+
+.header p {
+  color: $text-secondary;
+}
+
+.actions {
+  display: flex;
+  gap: $space-md;
+}

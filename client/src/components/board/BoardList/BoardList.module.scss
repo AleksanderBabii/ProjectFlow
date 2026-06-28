@@ -1,0 +1,46 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.createBoardCard {
+  margin-bottom: $space-2xl;
+}
+
+.createBoard {
+  display: flex;
+  align-items: flex-end;
+  gap: $space-md;
+  margin-top: $space-md;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $space-lg;
+}
+
+.empty {
+  text-align: center;
+
+  padding: $space-2xl;
+
+  border: 2px dashed $border;
+
+  border-radius: $radius-lg;
+
+  color: $text-secondary;
+}
+
+.empty h3 {
+  margin-bottom: .5rem;
+  color: $text-primary;
+}
+
+@media (max-width: 768px) {
+  .createBoard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

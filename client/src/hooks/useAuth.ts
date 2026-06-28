@@ -1,36 +1,34 @@
 import { useState, useEffect } from "react";
-import {getMe} from "../api/authApi.ts";
-import {useAuthStore} from "../store/authStore.ts";
-import { useNavigate } from "react-router-dom";
+import { getMe } from "../api/authApi";
+import { useAuthStore } from "../store/authStore";
 
 export const useAuth = () => {
-    const token = useAuthStore((state) => state.token);
-    const setUser = useAuthStore((state) => state.setUser);
-    const [loading, setLoading] = useState(true);
-    const logout = useAuthStore((state) => state.logout);
+  const token = useAuthStore((state) => state.token);
+  const setUser = useAuthStore((state) => state.setUser);
+  const logout = useAuthStore((state) => state.logout);
 
-    const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const restoreSession = async () => {
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-            try {
-                const user = await getMe();
-                setUser(user);
-            } catch (error) {
-                console.error("Failed to restore session:", error);
-                logout();
-                navigate("/login");
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const restoreSession = async () => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-        restoreSession();
-    }, [token, setUser, logout, navigate]);
+      try {
+        const user = await getMe();
+        setUser(user);
+      } catch (error) {
+        console.error("Failed to restore session:", error);
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return { loading };
-}
+    restoreSession();
+  }, [token, setUser, logout]);
+
+  return { loading };
+};

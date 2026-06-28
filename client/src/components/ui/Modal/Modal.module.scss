@@ -1,0 +1,94 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, .45);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+
+  animation: fadeIn .2s ease;
+}
+
+.modal {
+  width: min(90%, 550px);
+
+  background: $surface;
+
+  border-radius: $radius-lg;
+
+  box-shadow: $shadow-lg;
+
+  overflow: hidden;
+
+  animation: scaleIn .2s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem 1.5rem;
+
+  border-bottom: 1px solid $border;
+}
+
+.body {
+  padding: 1.5rem;
+}
+
+.close {
+  background: transparent;
+
+  border: none;
+
+  font-size: 1.5rem;
+
+  cursor: pointer;
+
+  color: $text-secondary;
+
+  transition: $transition-fast;
+}
+
+.close:hover {
+  color: $danger;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    padding: 1rem 1.5rem;
+
+    border-top: 1px solid $border;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

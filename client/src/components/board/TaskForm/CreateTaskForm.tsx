@@ -44,6 +44,7 @@ const CreateTaskForm = ({ onCreateTask }: Props) => {
           { value: "MEDIUM", label: "🟡 Medium" },
           { value: "HIGH", label: "🔴 High" },
         ]}
+        
       />
 
       <Button className={styles.button} type="submit">

@@ -2,74 +2,73 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 
-import { loginSchema, LoginFormData } from "../../../schemas/loginSchema";
+import {
+  loginSchema,
+  LoginFormData,
+} from "../../../schemas/loginSchema";
 
-import api from "../../../services/axios";
+import { login } from "../../../api/authApi";
 import { useAuthStore } from "../../../store/authStore";
 
 import Input from "../../ui/Input";
-import Button from "../../ui/Button/Button"
+import Button from "../../ui/Button";
+
+import styles from "./LoginForm.module.scss";
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [serverError, setServerError] = useState("");
 
-  const login = useAuthStore((state) => state.login);
+  const navigate = useNavigate();
+
+  const loginToStore = useAuthStore((state) => state.login);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await api.post("/auth/login", data);
+      setServerError("");
 
-      login(response.data.token, response.data.user);
+      const response = await login(data.email, data.password);
 
-      navigate("/dashboard", { replace: true });
-    } catch (error) {
-      console.error(error);
+      loginToStore(response.token, response.user);
 
-      if (axios.isAxiosError(error)) {
-        setErrorMessage(
-          error.response?.data?.message || error.message || "Login failed.",
-        );
-      } else {
-        setErrorMessage(
-          error instanceof Error ? error.message : "Login failed.",
-        );
-      }
+      navigate("/dashboard");
+    } catch {
+      setServerError("Invalid email or password.");
     }
   };
 
-  //Transfer button to the register page
-  const handleRegisterClick = () => {
-    navigate("/register");
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>Login</h1>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      {serverError && <p className={styles.error}>{serverError}</p>}
 
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      <Input
+        label="Email"
+        type="email"
+        placeholder="you@example.com"
+        error={errors.email?.message}
+        fullWidth
+        {...register("email")}
+      />
 
-      <Input type="email" placeholder="Email" {...register("email")} />
+      <Input
+        label="Password"
+        type="password"
+        placeholder="Your password"
+        error={errors.password?.message}
+        fullWidth
+        {...register("password")}
+      />
 
-      {errors.email && <p>{errors.email.message}</p>}
-
-      <Input type="password" placeholder="Password" {...register("password")} />
-
-      {errors.password && <p>{errors.password.message}</p>}
-
-      <Button type="submit">Login</Button>
-      <Button type="button" onClick={handleRegisterClick}>
-        Not with us yet? Register here!
+      <Button type="submit" fullWidth loading={isSubmitting}>
+        Login
       </Button>
     </form>
   );

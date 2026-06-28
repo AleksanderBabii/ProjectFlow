@@ -1,0 +1,61 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-xl;
+  background: $background;
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  margin-bottom: $space-xl;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: $radius-md;
+  background: $primary;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.brand h1 {
+  font-size: 1.4rem;
+}
+
+.header {
+  margin-bottom: $space-xl;
+}
+
+.header h2 {
+  margin-bottom: $space-xs;
+}
+
+.header p {
+  color: $text-secondary;
+}
+
+.footer {
+  margin-top: $space-xl;
+  text-align: center;
+  color: $text-secondary;
+}
+
+.footer a {
+  color: $primary;
+  font-weight: 600;
+}
