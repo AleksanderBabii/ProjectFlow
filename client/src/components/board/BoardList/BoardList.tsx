@@ -1,11 +1,7 @@
 import { useState } from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getBoards, createBoard } from "../../../api/boardApi";
+import { getBoards, createBoard, deleteBoard } from "../../../api/boardApi";
 import { Board } from "../../../types/board";
 
 import BoardCard from "../BoardCard/BoardCard";
@@ -42,6 +38,16 @@ const BoardList = () => {
     },
   });
 
+  const deleteBoardMutation = useMutation({
+    mutationFn: deleteBoard,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["boards"],
+      });
+    },
+  });
+
   const handleCreateBoard = () => {
     const title = newTitle.trim();
 
@@ -52,9 +58,17 @@ const BoardList = () => {
     });
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleDeleteBoard = (boardId: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this board? All tasks inside it will also be deleted.",
+    );
+
+    if (!confirmed) return;
+
+    deleteBoardMutation.mutate(boardId);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleCreateBoard();
     }
@@ -66,12 +80,7 @@ const BoardList = () => {
 
   if (error) {
     return (
-      <p>
-        Error:{" "}
-        {error instanceof Error
-          ? error.message
-          : "Unknown error"}
-      </p>
+      <p>Error: {error instanceof Error ? error.message : "Unknown error"}</p>
     );
   }
 
@@ -111,6 +120,7 @@ const BoardList = () => {
             <BoardCard
               key={board.id}
               board={board}
+              onDelete={handleDeleteBoard}
             />
           ))}
         </div>

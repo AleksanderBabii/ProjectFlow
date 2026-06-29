@@ -1,51 +1,32 @@
-import {
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Board from "../components/board/Board/Board"
+import Board from "../components/board/Board/Board";
 
 import ProtectedRoute from "./ProtectedRoute";
-import PublicRoute from "./PublicRoute";
+import MainLayout from "../components/layout/MainLayout/MainLayout";
 
 const AppRoutes = () => {
   return (
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
+    <Routes>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-        <Route path="/boards/:id" element = {<ProtectedRoute> <Board /></ProtectedRoute>} />
-      </Routes>
+      <Route
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/boards/:id" element={<Board />} />
+      </Route>
+    </Routes>
   );
 };
 
