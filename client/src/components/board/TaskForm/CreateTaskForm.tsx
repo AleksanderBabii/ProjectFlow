@@ -36,7 +36,6 @@ const CreateTaskForm = ({ onCreateTask }: Props) => {
       />
 
       <Select
-        fullWidth
         value={priority}
         onChange={(e) => setPriority(e.target.value as TaskPriority)}
         options={[

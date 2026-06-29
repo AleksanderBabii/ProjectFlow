@@ -1,7 +1,4 @@
-import {
-  forwardRef,
-  SelectHTMLAttributes,
-} from "react";
+import { forwardRef, SelectHTMLAttributes } from "react";
 
 import styles from "./Select.module.scss";
 
@@ -10,40 +7,20 @@ interface Option {
   value: string;
 }
 
-interface SelectProps
-  extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   options: Option[];
-  fullWidth?: boolean;
 }
 
-const Select = forwardRef<
-  HTMLSelectElement,
-  SelectProps
->(
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
-    {
-      label,
-      error,
-      options,
-      fullWidth = false,
-      className = "",
-      ...props
-    },
-    ref
+    { label, error, options, className = "", ...props },
+    ref,
   ) => {
     return (
-      <div
-        className={`${styles.wrapper} ${
-          fullWidth ? styles.fullWidth : ""
-        }`}
-      >
-        {label && (
-          <label className={styles.label}>
-            {label}
-          </label>
-        )}
+      <div className={`${styles.wrapper} `}>
+        {label && <label className={styles.label}>{label}</label>}
 
         <select
           ref={ref}
@@ -56,7 +33,7 @@ const Select = forwardRef<
         >
           {options.map((option) => (
             <option
-            aria-placeholder="Task Priority"
+              aria-placeholder="Task Priority"
               key={option.value}
               value={option.value}
             >
@@ -65,14 +42,10 @@ const Select = forwardRef<
           ))}
         </select>
 
-        {error && (
-          <span className={styles.errorMessage}>
-            {error}
-          </span>
-        )}
+        {error && <span className={styles.errorMessage}>{error}</span>}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

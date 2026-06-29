@@ -1,7 +1,4 @@
-import {
-  ReactNode,
-  useEffect,
-} from "react";
+import { ReactNode, useEffect } from "react";
 
 import Button from "../Button";
 
@@ -15,13 +12,7 @@ interface ModalProps {
   onClose: () => void;
 }
 
-const Modal = ({
-  isOpen,
-  title,
-  children,
-  footer,
-  onClose,
-}: ModalProps) => {
+const Modal = ({ isOpen, title, children, footer, onClose }: ModalProps) => {
   useEffect(() => {
     if (!isOpen) return;
 
@@ -37,10 +28,7 @@ const Modal = ({
 
     return () => {
       document.body.style.overflow = "auto";
-      window.removeEventListener(
-        "keydown",
-        handleKeyDown
-      );
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
@@ -49,41 +37,22 @@ const Modal = ({
   }
 
   return (
-    <div
-      className={styles.overlay}
-      onClick={onClose}
-    >
+    <div className={styles.overlay} onClick={onClose}>
       <div
         className={styles.modal}
-        onClick={(event) =>
-          event.stopPropagation()
-        }
+        onClick={(event) => event.stopPropagation()}
       >
         <div className={styles.header}>
-          {title && (
-            <h2 className={styles.title}>
-              {title}
-            </h2>
-          )}
+          {title && <h2 className={styles.title}>{title}</h2>}
 
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onClose}
-          >
+          <Button variant="secondary" size="sm" onClick={onClose}>
             ✕
           </Button>
         </div>
 
-        <div className={styles.body}>
-          {children}
-        </div>
+        <div className={styles.body}>{children}</div>
 
-        {footer && (
-          <div className={styles.footer}>
-            {footer}
-          </div>
-        )}
+        {footer && <div className={styles.footer}>{footer}</div>}
       </div>
     </div>
   );
