@@ -1,21 +1,14 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
-  pointerWithin,
-} from "@dnd-kit/core";
+import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 
 import Container from "../../layout/Container";
 import PageHeader from "../../layout/PageHeader";
 
-import TaskColumn from "../../board/TaskColumn/TaskColumn";
+import TaskBoard from "../../board/TaskBoard";
 import EditTaskModal from "../../board/EditTaskModal";
 import CreateTaskForm from "../TaskForm/CreateTaskForm";
-import TaskDragOverlay from "../../board/TaskDragOverlay";
 
 import { useBoard } from "../../../hooks/useBoard";
 import { useTasks } from "../../../hooks/useTasks";
@@ -25,8 +18,6 @@ import { useDeleteTask } from "../../../hooks/useDeleteTask";
 
 import { Task, TaskPriority, TaskStatus } from "../../../types/task";
 
-import styles from "./Board.module.scss";
-
 const isTaskStatus = (value: unknown): value is TaskStatus => {
   return value === "TODO" || value === "IN_PROGRESS" || value === "DONE";
 };
@@ -35,6 +26,7 @@ const Board = () => {
   const { id } = useParams();
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const {
@@ -57,17 +49,9 @@ const Board = () => {
     return <p>Loading...</p>;
   }
 
-  if (boardError || tasksError) {
+  if (boardError || tasksError || !board) {
     return <p>Failed to load board data.</p>;
   }
-
-  const todoTasks = tasks.filter((task: Task) => task.status === "TODO");
-
-  const inProgressTasks = tasks.filter(
-    (task: Task) => task.status === "IN_PROGRESS",
-  );
-
-  const doneTasks = tasks.filter((task: Task) => task.status === "DONE");
 
   const handleCreateTask = (title: string, priority: TaskPriority) => {
     createTaskMutation.mutate({
@@ -79,9 +63,7 @@ const Board = () => {
   const handleMoveTask = (taskId: string, status: TaskStatus) => {
     updateTaskMutation.mutate({
       taskId,
-      data: {
-        status,
-      },
+      data: { status },
     });
   };
 
@@ -136,7 +118,9 @@ const Board = () => {
 
     const currentTask = tasks.find((task: Task) => task.id === taskId);
 
-    if (!currentTask || currentTask.status === newStatus) return;
+    if (!currentTask || currentTask.status === newStatus) {
+      return;
+    }
 
     updateTaskMutation.mutate({
       taskId,
@@ -155,44 +139,15 @@ const Board = () => {
 
       <CreateTaskForm onCreateTask={handleCreateTask} />
 
-      <DndContext
-        collisionDetection={pointerWithin}
+      <TaskBoard
+        tasks={tasks}
+        activeTask={activeTask}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-      >
-        <div className={styles.columns}>
-          <TaskColumn
-            title="To Do"
-            status="TODO"
-            tasks={todoTasks}
-            onDelete={handleDeleteTask}
-            onEdit={handleOpenEditModal}
-            onMove={handleMoveTask}
-          />
-
-          <TaskColumn
-            title="In Progress"
-            status="IN_PROGRESS"
-            tasks={inProgressTasks}
-            onDelete={handleDeleteTask}
-            onEdit={handleOpenEditModal}
-            onMove={handleMoveTask}
-          />
-
-          <TaskColumn
-            title="Done"
-            status="DONE"
-            tasks={doneTasks}
-            onDelete={handleDeleteTask}
-            onEdit={handleOpenEditModal}
-            onMove={handleMoveTask}
-          />
-        </div>
-
-        <DragOverlay dropAnimation={null}>
-          {activeTask ? <TaskDragOverlay task={activeTask} /> : null}
-        </DragOverlay>
-      </DndContext>
+        onDelete={handleDeleteTask}
+        onEdit={handleOpenEditModal}
+        onMove={handleMoveTask}
+      />
 
       <EditTaskModal
         isOpen={Boolean(selectedTask)}

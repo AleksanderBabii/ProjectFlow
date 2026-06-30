@@ -4,23 +4,64 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: $space-lg;
 
-  min-height: 180px;
+  min-height: 240px;
 
   cursor: pointer;
+
+  transition: transform .2s ease,
+              box-shadow .2s ease;
 }
 
-.card h3 {
-  margin-bottom: $space-sm;
+.card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: $shadow-lg;
 }
 
-.card p {
+.content {
+  display: flex;
+  flex-direction: column;
+
+  gap: $space-md;
+}
+
+.content h3 {
+  font-size: 1.25rem;
+
+  color: $text-primary;
+}
+
+.description {
+  color: $text-secondary;
+
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.footer {
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: $space-md;
+}
+
+.date {
+  font-size: .85rem;
+
   color: $text-secondary;
 }
 
 .actions {
   display: flex;
+
   gap: $space-sm;
 }
 

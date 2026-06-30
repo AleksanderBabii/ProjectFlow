@@ -1,0 +1,13 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-md;
+}

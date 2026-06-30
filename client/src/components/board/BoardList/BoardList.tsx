@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getBoards, createBoard, deleteBoard } from "../../../api/boardApi";
 import { Board } from "../../../types/board";
 
+import { useBoards } from "../../../hooks/useBoards";
+import { useCreateBoard } from "../../../hooks/useCreateBoard";
+import { useDeleteBoard } from "../../../hooks/useDeleteBoard";
+import { useUpdateBoard } from "../../../hooks/useUpdateBoard";
+
 import BoardCard from "../BoardCard/BoardCard";
+import EditBoardModal from "../EditBoardModal";
 
 import Card from "../../layout/Card";
 import Button from "../../ui/Button";
@@ -14,38 +18,22 @@ import styles from "./BoardList.module.scss";
 
 const BoardList = () => {
   const [newTitle, setNewTitle] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
 
-  const queryClient = useQueryClient();
+  const { data: boards = [], isLoading, error } = useBoards();
 
-  const {
-    data: boards = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["boards"],
-    queryFn: getBoards,
-  });
+  const createBoardMutation = useCreateBoard();
+  const deleteBoardMutation = useDeleteBoard();
+  const updateBoardMutation = useUpdateBoard();
 
-  const createBoardMutation = useMutation({
-    mutationFn: createBoard,
+  const filteredBoards = boards.filter((board: Board) => {
+    const query = searchTerm.trim().toLowerCase();
 
-    onSuccess: () => {
-      setNewTitle("");
-
-      queryClient.invalidateQueries({
-        queryKey: ["boards"],
-      });
-    },
-  });
-
-  const deleteBoardMutation = useMutation({
-    mutationFn: deleteBoard,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["boards"],
-      });
-    },
+    return (
+      board.title.toLowerCase().includes(query) ||
+      board.description?.toLowerCase().includes(query)
+    );
   });
 
   const handleCreateBoard = () => {
@@ -53,9 +41,29 @@ const BoardList = () => {
 
     if (!title) return;
 
-    createBoardMutation.mutate({
-      title,
+    createBoardMutation.mutate(
+      { title },
+      {
+        onSuccess: () => {
+          setNewTitle("");
+        },
+      },
+    );
+  };
+
+  const handleUpdateBoard = (
+    id: string,
+    data: {
+      title: string;
+      description?: string;
+    },
+  ) => {
+    updateBoardMutation.mutate({
+      id,
+      ...data,
     });
+
+    setSelectedBoard(null);
   };
 
   const handleDeleteBoard = (boardId: string) => {
@@ -79,9 +87,7 @@ const BoardList = () => {
   }
 
   if (error) {
-    return (
-      <p>Error: {error instanceof Error ? error.message : "Unknown error"}</p>
-    );
+    return <p>Failed to load boards.</p>;
   }
 
   return (
@@ -108,23 +114,47 @@ const BoardList = () => {
         </div>
       </Card>
 
+      <Card className={styles.searchCard}>
+        <Input
+          fullWidth
+          placeholder="🔍 Search boards..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Card>
+
       {boards.length === 0 ? (
         <div className={styles.empty}>
-          <h3>No boards yet</h3>
+          <div className={styles.emptyIcon}>📋</div>
 
-          <p>Create your first board to get started.</p>
+          <h2>No boards yet</h2>
+
+          <p>Create your first project board to organize your work.</p>
+
+          <Button onClick={() => document.querySelector("input")?.focus()}>
+            Create Board
+          </Button>
         </div>
       ) : (
         <div className={styles.grid}>
-          {boards.map((board: Board) => (
+          {filteredBoards.map((board: Board) => (
             <BoardCard
               key={board.id}
               board={board}
               onDelete={handleDeleteBoard}
+              onEdit={setSelectedBoard}
             />
           ))}
         </div>
       )}
+
+      <EditBoardModal
+        key={selectedBoard?.id}
+        board={selectedBoard}
+        isOpen={Boolean(selectedBoard)}
+        onClose={() => setSelectedBoard(null)}
+        onSave={handleUpdateBoard}
+      />
     </>
   );
 };

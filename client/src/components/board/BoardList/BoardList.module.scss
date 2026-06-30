@@ -1,7 +1,7 @@
 @use "../../../styles/abstracts/variables" as *;
 
 .createBoardCard {
-  margin-bottom: $space-2xl;
+  margin-bottom: $space-xl;
 }
 
 .createBoard {
@@ -11,6 +11,10 @@
   margin-top: $space-md;
 }
 
+.searchCard {
+  margin-bottom: $space-xl;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -18,20 +22,37 @@
 }
 
 .empty {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 
-  padding: $space-2xl;
+  align-items: center;
+  justify-content: center;
+
+  gap: $space-md;
+
+  padding: 4rem 2rem;
 
   border: 2px dashed $border;
 
   border-radius: $radius-lg;
 
-  color: $text-secondary;
+  text-align: center;
 }
 
-.empty h3 {
-  margin-bottom: .5rem;
+.empty h2 {
   color: $text-primary;
+}
+
+.empty p {
+  max-width: 380px;
+
+  color: $text-secondary;
+
+  line-height: 1.6;
+}
+
+.emptyIcon {
+  font-size: 3rem;
 }
 
 @media (max-width: 768px) {

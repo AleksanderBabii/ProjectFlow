@@ -1,32 +1,41 @@
-import { useAuthStore } from "../../../store/authStore";
+import { useLocation } from "react-router-dom";
+import { HiBell, HiMagnifyingGlass } from "react-icons/hi2";
+
+import UserMenu from "../UserMenu";
 
 import styles from "./Topbar.module.scss";
 
+const getPageTitle = (pathname: string) => {
+  if (pathname === "/dashboard") return "Dashboard";
+  if (pathname.startsWith("/boards/")) return "Board";
+  if (pathname === "/settings") return "Settings";
+
+  return "ProjectFlow";
+};
 const Topbar = () => {
-  const user = useAuthStore((state) => state.user);
-
-  const username = user?.username ?? "User";
-
-  const initials = username
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const location = useLocation();
 
   return (
     <header className={styles.topbar}>
+      
       <div>
-        <h2>ProjectFlow</h2>
+        <h2> {getPageTitle(location.pathname)} </h2>
       </div>
 
-      <div className={styles.user}>
-        <div className={styles.avatar}>
-          {initials}
+      <div className={styles.actions}>
+        <div className={styles.search}>
+          <HiMagnifyingGlass />
+          <input placeholder="Search..." />
         </div>
 
-        <span>{username}</span>
+        <UserMenu />
+
+        <button className={styles.iconButton}>
+          <HiBell />
+        </button>
+
       </div>
+
     </header>
   );
 };

@@ -4,14 +4,6 @@
   padding: 2rem;
 }
 
-.columns {
-  display: flex;
-  gap: $space-lg;
-  align-items: flex-start;
-  overflow-x: auto;
-  padding-bottom: $space-lg;
-}
-
 .dragOverlay {
   background: $surface;
   border: 1px solid $border;

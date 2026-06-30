@@ -15,6 +15,49 @@
   padding: $space-xl;
 }
 
-.footer {
+.userSection {
   margin-top: auto;
+
+  border-top: 1px solid $border;
+
+  padding-top: $space-lg;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: $space-md;
+}
+
+.user {
+  display: flex;
+
+  align-items: center;
+
+  gap: $space-md;
+}
+
+.avatar {
+  width: 46px;
+
+  height: 46px;
+
+  border-radius: 50%;
+
+  background: $primary;
+
+  color: white;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-weight: 700;
+}
+
+.user p {
+  font-size: .85rem;
+
+  color: $text-secondary;
 }

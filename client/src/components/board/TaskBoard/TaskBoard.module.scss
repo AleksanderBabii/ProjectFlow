@@ -1,0 +1,11 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.columns {
+  display: flex;
+  gap: $space-lg;
+  align-items: flex-start;
+
+  overflow-x: auto;
+
+  padding-bottom: $space-lg;
+}

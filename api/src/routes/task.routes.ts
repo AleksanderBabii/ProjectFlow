@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
-  createTask,
+  getAllTasksByUser,
   getTasksByBoard,
+  createTask,
   updateTask,
   deleteTask,
 } from "../controllers/task.controller.ts";
@@ -11,23 +12,12 @@ const router = Router();
 
 router.use(protect);
 
-router.get(
-    "/boards/:boardId/tasks",
-    getTasksByBoard
-)
+router.get("/tasks", protect, getAllTasksByUser);
 
-router.post(
-    "/boards/:boardId/tasks",
-    createTask
-)
+router.get("/boards/:boardId/tasks", getTasksByBoard);
+router.post("/boards/:boardId/tasks", createTask);
 
-router.put(
-    "/task/:taskId",
-    updateTask
-)
-router.delete(
-    "/task/:taskId",
-    deleteTask
-)
+router.put("/task/:taskId", updateTask);
+router.delete("/task/:taskId", deleteTask);
 
 export default router;

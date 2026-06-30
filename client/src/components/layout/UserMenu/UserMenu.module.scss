@@ -1,0 +1,97 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.menu {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+
+  background: transparent;
+
+  border: none;
+
+  cursor: pointer;
+
+  color: inherit;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: $primary;
+
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+}
+
+.dropdown {
+  position: absolute;
+
+  right: 0;
+  top: calc(100% + .75rem);
+
+  width: 260px;
+
+  background: $surface;
+
+  border: 1px solid $border;
+
+  border-radius: $radius-lg;
+
+  box-shadow: $shadow-lg;
+
+  overflow: hidden;
+
+  z-index: 50;
+}
+
+.header {
+  padding: $space-lg;
+
+  border-bottom: 1px solid $border;
+}
+
+.header p {
+  margin-top: .25rem;
+
+  color: $text-secondary;
+
+  font-size: .9rem;
+}
+
+.dropdown button {
+  width: 100%;
+
+  padding: .9rem 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.dropdown button:hover {
+  background: rgba(79,70,229,.08);
+}
+
+.logout {
+  color: #dc2626;
+}

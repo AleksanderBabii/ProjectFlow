@@ -69,3 +69,15 @@ export const deleteTask = async (taskId: string) => {
     });
 }
 
+export const getAllTasksByUser = async (userId: string) => {
+  return prisma.task.findMany({
+    where: {
+      board: {
+        ownerId: userId,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};

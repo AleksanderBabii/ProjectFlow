@@ -1,0 +1,33 @@
+@use "../../../styles/abstracts/variables" as *;
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: $space-lg;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: $radius-md;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(79, 70, 229, 0.12);
+  color: $primary;
+
+  font-size: 1.5rem;
+}
+
+.label {
+  color: $text-secondary;
+  font-size: 0.9rem;
+}
+
+.value {
+  margin-top: 0.25rem;
+  font-size: 1.6rem;
+}

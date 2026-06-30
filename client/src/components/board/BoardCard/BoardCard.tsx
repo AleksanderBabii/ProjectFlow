@@ -10,49 +10,56 @@ import styles from "./BoardCard.module.scss";
 interface BoardCardProps {
   board: Board;
   onDelete: (boardId: string) => void;
+  onEdit: (board: Board) => void;
 }
 
-const BoardCard = ({ board, onDelete }: BoardCardProps) => {
+const BoardCard = ({ board, onDelete, onEdit }: BoardCardProps) => {
   const navigate = useNavigate();
 
   const handleOpenBoard = () => {
     navigate(`/boards/${board.id}`);
   };
 
-  const handleDelete = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.stopPropagation();
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
 
     onDelete(board.id);
   };
 
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    onEdit(board);
+  };
+
   return (
     <Card className={styles.card} onClick={handleOpenBoard}>
-      <div>
+      <div className={styles.content}>
         <h3>{board.title}</h3>
 
-        {board.description && (
-          <p>{board.description}</p>
-        )}
+        <p className={styles.description}>
+          {board.description || "No description provided."}
+        </p>
       </div>
 
-      <div className={styles.actions}>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={handleOpenBoard}
-        >
-          Open
-        </Button>
+      <div className={styles.footer}>
+        <span className={styles.date}>
+          Created {new Date(board.createdAt).toLocaleDateString()}
+        </span>
 
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
+        <div className={styles.actions}>
+          <Button size="sm" onClick={handleOpenBoard}>
+            Open
+          </Button>
+
+          <Button size="sm" variant="secondary" onClick={handleEdit}>
+            Edit
+          </Button>
+
+          <Button size="sm" variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
+        </div>
       </div>
     </Card>
   );

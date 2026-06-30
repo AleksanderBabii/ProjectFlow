@@ -1,6 +1,7 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../types/authRequest.ts";
 import {
+  getAllTasksByUser as getAllTasksByUserService,
   getTasksByBoard as getTasksByBoardService,
   createTask as createTaskService,
   updateTask as updateTaskService,
@@ -108,6 +109,26 @@ export const deleteTask = async (
         error instanceof Error
           ? error.message
           : "Failed to delete task",
+    });
+  }
+};
+
+export const getAllTasksByUser = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const userId = req.user!.userId;
+
+    const tasks = await getAllTasksByUserService(userId);
+
+    return res.status(200).json(tasks);
+  } catch (error) {
+    return res.status(500).json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch tasks",
     });
   }
 };
